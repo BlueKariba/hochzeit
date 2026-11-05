@@ -92,11 +92,14 @@
   .button.secondary { background: var(--cream); }
   .button.secondary:hover { background: var(--sage-light); }
   [hidden] { display: none !important; }
+  .vorschau-hinweis { margin: 0 0 12px; padding: 8px 12px; background: var(--forest); color: var(--cream); border-radius: 10px; font-family: 'DM Mono', monospace; font-size: 13px; line-height: 1.45; }
+  .facts li.ist-vorschau { border-top-style: dashed; padding-left: 8px; padding-right: 8px; border-radius: 0 0 8px 8px; background: repeating-linear-gradient(135deg, rgba(255, 200, 61, .2) 0 10px, transparent 10px 20px); }
   .note { margin: 26px 0 0; font-family: 'DM Mono', monospace; font-size: 14px; line-height: 1.45; border-top: 2px solid var(--forest); padding-top: 14px; text-align: left; }
 </style>
 </head>
 <body>
 <main>
+  <p class="vorschau-hinweis" id="vorschau-hinweis" hidden>Vorschau: Die gestreiften Bereiche sind noch versteckt. Gäste sehen sie nicht.</p>
   <article class="ticket">
     <a class="game-sticker" href="spiel.html" aria-label="Spiel Wunderwagen: Zuckerwatte und Bier fangen">
       <svg viewBox="0 0 120 120" aria-hidden="true">
@@ -145,6 +148,16 @@
         <span class="value">Hotels und Tipps in der Nähe.</span>
         <span><a class="button" href="uebernachtung.html">Zur Übernachtung</a></span>
       </li>
+      <li data-vorschau hidden>
+        <span class="label">Gut zu wissen</span>
+        <span class="value">Antworten auf die häufigsten Fragen.</span>
+        <span><a class="button" href="gut-zu-wissen.html">Zu den Fragen</a></span>
+      </li>
+      <li data-vorschau hidden>
+        <span class="label">Trauzeugen</span>
+        <span class="value">Rede, Spiel oder Überraschung geplant? Hier anmelden.</span>
+        <span><a class="button" href="trauzeugen.html">Zu den Trauzeugen</a></span>
+      </li>
       <li>
         <span class="label">Motto</span>
         <span class="value">Zuckerwatte &amp; Bier</span>
@@ -171,6 +184,12 @@
     : tage === 0 ? 'Heute ist es so weit!'
     : 'Danke, dass ihr dabei wart!';
   el.hidden = false;
+})();
+(function () {
+  // Versteckte Bereiche nur mit ?vorschau in der Adresse zeigen
+  if (!/[?&]vorschau(=|&|$)/.test(location.search)) return;
+  document.getElementById('vorschau-hinweis').hidden = false;
+  Array.prototype.forEach.call(document.querySelectorAll('[data-vorschau]'), function (el) { el.hidden = false; el.classList.add('ist-vorschau'); });
 })();
 </script>
 </body>

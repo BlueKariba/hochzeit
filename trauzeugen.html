@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Trauzeugen · Tobi &amp; Alina heiraten</title>
+<link rel="icon" href="logo.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders:wght@700&family=DM+Mono&family=Young+Serif&display=swap">
+<style>
+  :root {
+    --sage: #C3D1B1;
+    --sage-light: #D3DEC5;
+    --forest: #1E3A2B;
+    --amber: #F5A800;
+    --gold: #FFC83D;
+    --cream: #FFF4DC;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--sage);
+    background-image: repeating-conic-gradient(from 0deg at 50% 0%, var(--sage-light) 0deg 9deg, var(--sage) 9deg 18deg);
+    color: var(--forest);
+    font-family: 'Young Serif', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.5;
+  }
+  main { max-width: 560px; margin: 0 auto; padding: 28px 16px 40px; }
+  .entwurf { margin: 0 0 12px; padding: 8px 12px; background: var(--forest); color: var(--cream); border-radius: 10px; font-family: 'DM Mono', monospace; font-size: 13px; line-height: 1.45; }
+  .back { display: inline-flex; align-items: center; min-height: 44px; margin: 0 0 10px; color: var(--forest); font-family: 'DM Mono', monospace; font-size: 15px; }
+  .ticket {
+    background: var(--cream);
+    border: 6px solid var(--forest);
+    border-radius: 18px;
+    outline: 3px dotted var(--gold);
+    outline-offset: -14px;
+    padding: 30px 24px 28px;
+  }
+  .top { text-align: center; }
+  .logo { width: 84px; height: 84px; display: block; margin: 0 auto 8px; }
+  .kicker { font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; margin: 0; }
+  h1 {
+    font-family: 'Big Shoulders', Impact, sans-serif; font-weight: 700;
+    font-size: clamp(48px, 14vw, 72px); line-height: .9; margin: 10px 0 14px;
+    text-shadow: 3px 3px 0 var(--gold);
+  }
+  h2 { font-family: 'Big Shoulders', Impact, sans-serif; font-weight: 700; font-size: 30px; line-height: 1; margin: 0 0 8px; }
+  .intro { margin: 0 0 22px; text-align: center; }
+  .personen { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin: 0 0 24px; }
+  .person { padding: 16px; background: var(--sage-light); border-radius: 14px; text-align: center; }
+  .foto {
+    width: 112px; height: 112px; margin: 0 auto 10px; border-radius: 50%;
+    border: 3px solid var(--forest); background: var(--cream);
+    display: grid; place-items: center; overflow: hidden;
+    font-family: 'DM Mono', monospace; font-size: 12px; line-height: 1.3; text-align: center;
+  }
+  .foto img { width: 100%; height: 100%; object-fit: cover; }
+  .person .name { margin: 0; font-family: 'Big Shoulders', Impact, sans-serif; font-weight: 700; font-size: 26px; line-height: 1.1; }
+  .person .rolle { margin: 2px 0 8px; font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; }
+  .person .ueber { margin: 0; font-size: 16px; }
+  .anmelden { border-top: 2px solid var(--forest); padding-top: 18px; }
+  .anmelden > p { margin: 0 0 16px; }
+  .field-label { display: block; font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: .1em; text-transform: uppercase; margin: 0 0 6px; padding: 0; }
+  input[type="text"], input[type="number"], textarea {
+    width: 100%; min-height: 50px; padding: 10px 12px; margin: 0 0 18px;
+    font: inherit; font-size: 18px; color: var(--forest); background: #FFFFFF;
+    border: 2px solid var(--forest); border-radius: 10px;
+  }
+  textarea { min-height: 110px; resize: vertical; }
+  input[type="number"] { max-width: 140px; }
+  input:focus-visible, textarea:focus-visible { outline: 3px solid var(--amber); outline-offset: 2px; }
+  fieldset { border: 0; margin: 0 0 14px; padding: 0; }
+  .choice { display: flex; align-items: center; gap: 12px; min-height: 48px; padding: 8px 12px; margin: 0 0 8px; background: #FFFFFF; border: 2px solid var(--forest); border-radius: 10px; cursor: pointer; }
+  .choice input { width: 22px; height: 22px; accent-color: var(--forest); margin: 0; }
+  .error { margin: 0 0 12px; padding: 10px 12px; background: #FBE3D6; border: 2px solid #9A3412; border-radius: 10px; color: #7A2A0E; font-size: 16px; }
+  .button {
+    display: inline-flex; align-items: center; justify-content: center; width: 100%;
+    min-height: 52px; padding: 10px 18px;
+    background: var(--amber); color: var(--forest); cursor: pointer;
+    font-family: 'Big Shoulders', Impact, sans-serif; font-weight: 700; font-size: 24px; letter-spacing: .02em;
+    border: 3px solid var(--forest); border-radius: 10px;
+  }
+  .button:hover { background: var(--gold); }
+  .button:focus-visible { outline: 3px solid var(--forest); outline-offset: 3px; }
+  .button[disabled] { opacity: .55; cursor: default; }
+  .hint { margin: 10px 0 0; font-family: 'DM Mono', monospace; font-size: 13px; line-height: 1.45; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main>
+  <p class="entwurf">Entwurf · noch nicht freigeschaltet. Namen, Fotos und Kontaktadresse der Trauzeugen fehlen noch.</p>
+  <a class="back" href="./?vorschau">← Zurück zur Hochzeitsseite</a>
+  <article class="ticket">
+    <div class="top">
+      <img class="logo" src="logo.webp" alt="Logo: Zuckerwatte und Bier">
+      <p class="kicker">Tobi &amp; Alina · 24. Juli 2027</p>
+      <h1>Unsere Trauzeugen</h1>
+    </div>
+    <p class="intro">Ihr plant eine Rede, ein Spiel oder eine Überraschung? Dann meldet euch bei unseren Trauzeugen. Sie behalten den Überblick über den Abend, und für uns bleibt es eine Überraschung.</p>
+
+    <div class="personen">
+      <section class="person">
+        <div class="foto">Foto<br>folgt</div>
+        <p class="name">Name folgt</p>
+        <p class="rolle">An Tobis Seite</p>
+        <p class="ueber">Woher wir uns kennen: folgt.</p>
+      </section>
+      <section class="person">
+        <div class="foto">Foto<br>folgt</div>
+        <p class="name">Name folgt</p>
+        <p class="rolle">An Alinas Seite</p>
+        <p class="ueber">Woher wir uns kennen: folgt.</p>
+      </section>
+    </div>
+
+    <section class="anmelden" aria-labelledby="anmelden-titel">
+      <h2 id="anmelden-titel">Programmpunkt anmelden</h2>
+      <p>Damit sich nichts überschneidet: Sagt den Trauzeugen kurz, was ihr vorhabt.</p>
+
+      <form id="programm-form" novalidate>
+        <label class="field-label" for="pp-name">Euer Name</label>
+        <input id="pp-name" type="text" autocomplete="name" required>
+
+        <label class="field-label" for="pp-was">Was habt ihr vor?</label>
+        <textarea id="pp-was" required placeholder="z. B. kurze Rede, Spiel mit dem Brautpaar, Lied"></textarea>
+
+        <label class="field-label" for="pp-dauer">Ungefähre Dauer in Minuten</label>
+        <input id="pp-dauer" type="number" inputmode="numeric" min="1" max="120" value="10">
+
+        <fieldset>
+          <legend class="field-label">Was braucht ihr dafür?</legend>
+          <label class="choice"><input type="checkbox" name="technik" value="Mikrofon"> Mikrofon</label>
+          <label class="choice"><input type="checkbox" name="technik" value="Beamer und Leinwand"> Beamer und Leinwand</label>
+          <label class="choice"><input type="checkbox" name="technik" value="Musik / Lautsprecher"> Musik oder Lautsprecher</label>
+          <label class="choice"><input type="checkbox" name="technik" value="Tisch oder Strom"> Tisch oder Strom</label>
+        </fieldset>
+
+        <p id="pp-fehler" class="error" role="alert" hidden></p>
+        <button class="button" id="pp-senden" type="submit">Mail an die Trauzeugen öffnen</button>
+        <p class="hint" id="pp-hinweis">Danach öffnet sich dein E-Mail-Programm mit einer fertigen Nachricht an die Trauzeugen. Tobi und Alina bekommen davon nichts mit.</p>
+      </form>
+    </section>
+  </article>
+</main>
+<script>
+(function () {
+  // Adresse der Trauzeugen in zwei Teilen, z. B. ['trauzeugen.hochzeit', 'gmail.com'].
+  // Solange sie leer ist, bleibt der Knopf ausgeschaltet.
+  var ADRESSE = ['', ''];
+  var empfaenger = ADRESSE[0] && ADRESSE[1] ? ADRESSE.join('@') : '';
+
+  var form = document.getElementById('programm-form');
+  var knopf = document.getElementById('pp-senden');
+  var fehler = document.getElementById('pp-fehler');
+  if (!empfaenger) {
+    knopf.disabled = true;
+    document.getElementById('pp-hinweis').textContent = 'Die Kontaktadresse der Trauzeugen folgt noch.';
+  }
+  form.addEventListener('input', function () { fehler.hidden = true; });
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!empfaenger) return;
+    var name = document.getElementById('pp-name').value.trim();
+    var was = document.getElementById('pp-was').value.trim();
+    var dauer = parseInt(document.getElementById('pp-dauer').value, 10);
+    if (!name) { fehler.textContent = 'Bitte tragt euren Namen ein.'; fehler.hidden = false; return; }
+    if (!was) { fehler.textContent = 'Bitte schreibt kurz, was ihr vorhabt.'; fehler.hidden = false; return; }
+    var technik = Array.prototype.map.call(form.querySelectorAll('input[name="technik"]:checked'), function (c) { return c.value; });
+    var betreff = 'Hochzeit Tobi & Alina – Programmpunkt: ' + name;
+    var text = 'Name: ' + name + '\n\nWas wir vorhaben:\n' + was +
+      '\n\nDauer: ' + (dauer > 0 ? 'ca. ' + dauer + ' Minuten' : 'noch unklar') +
+      '\nBenötigt: ' + (technik.length ? technik.join(', ') : 'nichts Besonderes') +
+      '\n\nGesendet über die Hochzeitsseite.';
+    window.location.href = 'mailto:' + empfaenger + '?subject=' + encodeURIComponent(betreff) + '&body=' + encodeURIComponent(text);
+  });
+})();
+</script>
+</body>
+</html>
