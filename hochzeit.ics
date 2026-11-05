@@ -1,0 +1,21 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Tobi und Alina//Hochzeit 2027//DE
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:hochzeit-tobi-alina-20270724@bluekariba.github.io
+DTSTAMP:20261105T140000Z
+DTSTART:20270724T133000Z
+DTEND:20270724T220000Z
+SUMMARY:Hochzeit Tobi & Alina
+LOCATION:Onkel Bennos Eisdiele\, Taunus Wunderland\, Haus zur Schanze 1\, 65388 Schlangenbad
+DESCRIPTION:Motto: Zuckerwatte & Bier. Alle Infos und Zusage: https://bluekariba.github.io/hochzeit/
+URL:https://bluekariba.github.io/hochzeit/
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Morgen ist die Hochzeit von Tobi & Alina
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+END:VCALENDAR
