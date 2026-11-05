@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Zusage · Tobi &amp; Alina heiraten</title>
+<link rel="icon" href="logo.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders:wght@700&family=DM+Mono&family=Young+Serif&display=swap">
+<style>
+  :root {
+    --sage: #C3D1B1;
+    --sage-light: #D3DEC5;
+    --forest: #1E3A2B;
+    --amber: #F5A800;
+    --gold: #FFC83D;
+    --cream: #FFF4DC;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--sage);
+    background-image: repeating-conic-gradient(from 0deg at 50% 0%, var(--sage-light) 0deg 9deg, var(--sage) 9deg 18deg);
+    color: var(--forest);
+    font-family: 'Young Serif', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.5;
+  }
+  main { max-width: 560px; margin: 0 auto; padding: 28px 16px 40px; }
+  .back { display: inline-flex; align-items: center; min-height: 44px; margin: 0 0 10px; color: var(--forest); font-family: 'DM Mono', monospace; font-size: 15px; }
+  .ticket {
+    background: var(--cream);
+    border: 6px solid var(--forest);
+    border-radius: 18px;
+    outline: 3px dotted var(--gold);
+    outline-offset: -14px;
+    padding: 30px 24px 28px;
+  }
+  .top { text-align: center; }
+  .logo { width: 84px; height: 84px; display: block; margin: 0 auto 8px; }
+  .kicker { font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; margin: 0; }
+  h1 {
+    font-family: 'Big Shoulders', Impact, sans-serif; font-weight: 700;
+    font-size: clamp(48px, 14vw, 72px); line-height: .9; margin: 10px 0 10px;
+    text-shadow: 3px 3px 0 var(--gold);
+  }
+  .intro { margin: 0 0 22px; text-align: center; }
+  .field-label { display: block; font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: .1em; text-transform: uppercase; margin: 0 0 6px; padding: 0; }
+  input[type="text"], input[type="number"] {
+    width: 100%; min-height: 50px; padding: 10px 12px; margin: 0 0 18px;
+    font: inherit; font-size: 18px; color: var(--forest); background: #FFFFFF;
+    border: 2px solid var(--forest); border-radius: 10px;
+  }
+  input[type="number"] { max-width: 140px; }
+  input:focus-visible { outline: 3px solid var(--amber); outline-offset: 2px; }
+  fieldset { border: 0; margin: 0 0 12px; padding: 0; }
+  .choice { display: flex; align-items: center; gap: 12px; min-height: 48px; padding: 8px 12px; margin: 0 0 8px; background: #FFFFFF; border: 2px solid var(--forest); border-radius: 10px; cursor: pointer; }
+  .choice input { width: 22px; height: 22px; accent-color: var(--forest); margin: 0; }
+  .error { margin: 0 0 12px; padding: 10px 12px; background: #FBE3D6; border: 2px solid #9A3412; border-radius: 10px; color: #7A2A0E; font-size: 16px; }
+  .button {
+    display: inline-flex; align-items: center; justify-content: center; width: 100%;
+    min-height: 52px; margin-top: 4px; padding: 10px 18px;
+    background: var(--amber); color: var(--forest); cursor: pointer;
+    font-family: 'Big Shoulders', Impact, sans-serif; font-weight: 700; font-size: 24px; letter-spacing: .02em;
+    border: 3px solid var(--forest); border-radius: 10px;
+  }
+  .button:hover { background: var(--gold); }
+  .button:focus-visible { outline: 3px solid var(--forest); outline-offset: 3px; }
+  .hint { margin: 10px 0 0; font-family: 'DM Mono', monospace; font-size: 13px; line-height: 1.45; }
+  .danke { margin-top: 16px; padding: 12px 14px; background: var(--sage-light); border-radius: 10px; font-size: 16px; }
+  .danke p { margin: 0 0 6px; }
+  .danke a { color: var(--forest); }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="./">← Zurück zur Hochzeitsseite</a>
+  <article class="ticket">
+    <div class="top">
+      <img class="logo" src="logo.webp" alt="Logo: Zuckerwatte und Bier">
+      <p class="kicker">Tobi &amp; Alina · 24. Juli 2027</p>
+      <h1>Seid ihr dabei?</h1>
+    </div>
+    <p class="intro">Bitte gebt uns bis zum 01.04.2027 Bescheid.</p>
+
+    <form id="rsvp-form" novalidate>
+      <label class="field-label" for="rsvp-name">Euer Name</label>
+      <input id="rsvp-name" name="name" type="text" autocomplete="name" required placeholder="z. B. Anna &amp; Max Muster">
+
+      <fieldset>
+        <legend class="field-label">Kommt ihr?</legend>
+        <label class="choice"><input type="radio" name="kommt" value="ja" checked> Ja, wir kommen</label>
+        <label class="choice"><input type="radio" name="kommt" value="nein"> Leider nicht</label>
+      </fieldset>
+
+      <div id="personen-feld">
+        <label class="field-label" for="rsvp-personen">Anzahl Personen</label>
+        <input id="rsvp-personen" name="personen" type="number" inputmode="numeric" min="1" max="20" value="1" required>
+      </div>
+
+      <p id="rsvp-fehler" class="error" role="alert" hidden></p>
+      <button class="button send" type="submit">Zusage senden</button>
+      <p class="hint">Danach öffnet sich dein E-Mail-Programm mit einer fertigen Nachricht an uns. Bitte nur noch auf „Senden“ tippen.</p>
+    </form>
+
+    <div id="rsvp-danke" class="danke" hidden>
+      <p><strong>Danke!</strong> Bitte die Mail in deinem E-Mail-Programm noch abschicken.</p>
+      <p>Hat sich nichts geöffnet? Dann schreib uns einfach an <a id="rsvp-mail-link" href="#"></a>.</p>
+    </div>
+  </article>
+</main>
+<script>
+(function () {
+  // Empfaenger in Teilen, damit die Adresse nicht als Klartext im Quelltext steht
+  var empfaenger = ['Hochzeit27', ['outlook', 'com'].join('.')].join('@');
+  var form = document.getElementById('rsvp-form');
+  var personenFeld = document.getElementById('personen-feld');
+  var personen = document.getElementById('rsvp-personen');
+  var fehler = document.getElementById('rsvp-fehler');
+  var knopf = form.querySelector('.send');
+
+  function kommt() { return form.querySelector('input[name="kommt"]:checked').value === 'ja'; }
+  function aktualisieren() {
+    personenFeld.hidden = !kommt();
+    knopf.textContent = kommt() ? 'Zusage senden' : 'Absage senden';
+  }
+  form.querySelectorAll('input[name="kommt"]').forEach(function (r) { r.addEventListener('change', aktualisieren); });
+  aktualisieren();
+  form.addEventListener('input', function () { fehler.hidden = true; });
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var name = document.getElementById('rsvp-name').value.trim();
+    var anzahl = parseInt(personen.value, 10);
+    if (!name) { fehler.textContent = 'Bitte tragt euren Namen ein.'; fehler.hidden = false; return; }
+    if (kommt() && !(anzahl >= 1 && anzahl <= 20)) { fehler.textContent = 'Bitte gebt an, mit wie vielen Personen ihr kommt.'; fehler.hidden = false; return; }
+    fehler.hidden = true;
+    var betreff = 'Hochzeit – ' + (kommt() ? 'Zusage' : 'Absage') + ': ' + name;
+    var text = 'Name: ' + name + '\nKommt: ' + (kommt() ? 'Ja' : 'Nein') + (kommt() ? '\nPersonen: ' + anzahl : '') + '\n\nGesendet über die Hochzeitsseite.';
+    var link = document.getElementById('rsvp-mail-link');
+    link.href = 'mailto:' + empfaenger; link.textContent = empfaenger;
+    document.getElementById('rsvp-danke').hidden = false;
+    window.location.href = 'mailto:' + empfaenger + '?subject=' + encodeURIComponent(betreff) + '&body=' + encodeURIComponent(text);
+  });
+})();
+</script>
+</body>
+</html>
