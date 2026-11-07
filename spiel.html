@@ -119,6 +119,22 @@
   .board-state { margin: 6px 0 0; font-family: 'DM Mono', monospace; font-size: 13px; text-align: center; }
   .board-state:empty { display: none; }
   .actions { display: flex; flex-direction: column; gap: 10px; margin-top: 22px; }
+  .podium-wrap { margin: 24px 0 0; border-top: 2px solid var(--forest); padding-top: 14px; }
+  .podium-titel { margin: 0 0 12px; font-family: 'Big Shoulders', Impact, sans-serif; font-weight: 700; font-size: 30px; line-height: 1; }
+  .podium { list-style: none; margin: 0 auto; padding: 0; max-width: 380px; display: flex; align-items: flex-end; justify-content: center; gap: 8px; border-bottom: 4px solid var(--forest); }
+  .platz { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; align-items: center; }
+  .platz-1 { order: 2; }
+  .platz-2 { order: 1; }
+  .platz-3 { order: 3; }
+  .p-name { width: 100%; font-size: 15px; line-height: 1.25; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .p-pts { min-height: 22px; margin: 2px 0 6px; font-family: 'Big Shoulders', Impact, sans-serif; font-weight: 700; font-size: 22px; line-height: 1; }
+  .p-block { width: 100%; display: grid; place-items: center; border: 3px solid var(--forest); border-bottom: 0; border-radius: 10px 10px 0 0; font-family: 'Big Shoulders', Impact, sans-serif; font-weight: 700; font-size: 26px; line-height: 1; }
+  .platz-1 .p-block { height: 72px; background: var(--gold); }
+  .platz-2 .p-block { height: 54px; background: var(--sage-light); }
+  .platz-3 .p-block { height: 40px; background: var(--amber); }
+  .platz.frei .p-name { font-family: 'DM Mono', monospace; font-size: 13px; opacity: .7; }
+  .podium-state { margin: 10px 0 0; font-family: 'DM Mono', monospace; font-size: 13px; line-height: 1.45; }
+  .podium-state:empty { display: none; }
   [hidden] { display: none !important; }
 </style>
 </head>
@@ -172,6 +188,12 @@
     <p class="hint">Steuern: Finger über das Spielfeld ziehen. Am Computer mit der Maus oder den Pfeiltasten.</p>
     <p class="best" id="start-best" hidden></p>
     <button class="button start-btn" id="start" type="button">Losfahren</button>
+
+    <section class="podium-wrap" aria-labelledby="podium-titel">
+      <h2 class="podium-titel" id="podium-titel">Aktuelle Top 3</h2>
+      <ol class="podium" id="podium"></ol>
+      <p class="podium-state" id="podium-state" role="status"></p>
+    </section>
   </section>
 
   <!-- Spielfeld -->
@@ -813,6 +835,39 @@
       }
     });
   });
+
+  // ---------- Top 3 auf der Startseite ----------
+  var podiumEl = $('podium'), podiumState = $('podium-state');
+  function renderPodium(list, loading) {
+    podiumEl.innerHTML = '';
+    podiumEl.hidden = false;
+    for (var i = 0; i < 3; i++) {
+      var e = list[i];
+      var li = document.createElement('li');
+      li.className = 'platz platz-' + (i + 1) + (e ? '' : ' frei');
+      var name = document.createElement('span'); name.className = 'p-name';
+      name.textContent = e ? e.name : (loading ? '…' : 'noch frei');
+      var pts = document.createElement('span'); pts.className = 'p-pts';
+      pts.textContent = e ? fmt(e.score) : '';
+      var block = document.createElement('span'); block.className = 'p-block'; block.textContent = String(i + 1);
+      block.setAttribute('aria-hidden', 'true');
+      li.appendChild(name); li.appendChild(pts); li.appendChild(block);
+      podiumEl.appendChild(li);
+    }
+    podiumState.textContent = loading ? 'Wird geladen …' : (list.length ? '' : 'Das Treppchen ist noch frei. Hol dir Platz 1!');
+  }
+  function loadPodium() {
+    if (!HIGHSCORE_URL) { renderPodium(localTop().slice(0, 3), false); return; }
+    renderPodium([], true);
+    api({ a: 'top' }).then(function (d) {
+      if (!d || !d.ok) throw new Error('top');
+      renderPodium((d.top || []).slice(0, 3), false);
+    }).catch(function () {
+      podiumEl.hidden = true;
+      podiumState.textContent = 'Die Bestenliste ist gerade nicht erreichbar.';
+    });
+  }
+  loadPodium();
 
   $('start').addEventListener('click', startGame);
   $('nochmal').addEventListener('click', startGame);
