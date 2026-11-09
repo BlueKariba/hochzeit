@@ -64,32 +64,6 @@
   .person .rolle { margin: 2px 0 8px; font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; }
   .person .kontakt { margin: 0 0 8px; font-family: 'DM Mono', monospace; font-size: 15px; }
   .person .ueber { margin: 0; font-size: 16px; }
-  .anmelden { border-top: 2px solid var(--forest); padding-top: 18px; }
-  .anmelden > p { margin: 0 0 16px; }
-  .field-label { display: block; font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: .1em; text-transform: uppercase; margin: 0 0 6px; padding: 0; }
-  input[type="text"], input[type="number"], textarea {
-    width: 100%; min-height: 50px; padding: 10px 12px; margin: 0 0 18px;
-    font: inherit; font-size: 18px; color: var(--forest); background: #FFFFFF;
-    border: 2px solid var(--forest); border-radius: 10px;
-  }
-  textarea { min-height: 110px; resize: vertical; }
-  input[type="number"] { max-width: 140px; }
-  input:focus-visible, textarea:focus-visible { outline: 3px solid var(--amber); outline-offset: 2px; }
-  fieldset { border: 0; margin: 0 0 14px; padding: 0; }
-  .choice { display: flex; align-items: center; gap: 12px; min-height: 48px; padding: 8px 12px; margin: 0 0 8px; background: #FFFFFF; border: 2px solid var(--forest); border-radius: 10px; cursor: pointer; }
-  .choice input { width: 22px; height: 22px; accent-color: var(--forest); margin: 0; }
-  .error { margin: 0 0 12px; padding: 10px 12px; background: #FBE3D6; border: 2px solid #9A3412; border-radius: 10px; color: #7A2A0E; font-size: 16px; }
-  .button {
-    display: inline-flex; align-items: center; justify-content: center; width: 100%;
-    min-height: 52px; padding: 10px 18px;
-    background: var(--amber); color: var(--forest); cursor: pointer;
-    font-family: 'Big Shoulders', Impact, sans-serif; font-weight: 700; font-size: 24px; letter-spacing: .02em;
-    border: 3px solid var(--forest); border-radius: 10px;
-  }
-  .button:hover { background: var(--gold); }
-  .button:focus-visible { outline: 3px solid var(--forest); outline-offset: 3px; }
-  .button[disabled] { opacity: .55; cursor: default; }
-  .hint { margin: 10px 0 0; font-family: 'DM Mono', monospace; font-size: 13px; line-height: 1.45; }
   [hidden] { display: none !important; }
 </style>
 </head>
@@ -124,44 +98,16 @@
         <p class="name">Michi</p>
         <p class="rolle">An Tobis Seite</p>
         <p class="kontakt" hidden>Tel. <span data-tel="+49|1522|8960555"></span></p>
-        <p class="ueber">Woher wir uns kennen: folgt.</p>
+        <p class="ueber">Woher wir uns kennen: Seit vielen Jahren freundschaftlich Seite an Seite.</p>
       </section>
       <section class="person">
         <div class="foto"><img src="ruth.webp" alt="Ruth, Alinas Trauzeugin" width="360" height="360"></div>
         <p class="name">Ruth</p>
         <p class="rolle">An Alinas Seite</p>
         <p class="kontakt" hidden>Tel. <span data-tel="+49|175|1824162"></span></p>
-        <p class="ueber">Woher wir uns kennen: folgt.</p>
+        <p class="ueber">Woher wir uns kennen: Sie hat mich geboren.</p>
       </section>
     </div>
-
-    <section class="anmelden" aria-labelledby="anmelden-titel">
-      <h2 id="anmelden-titel">Programmpunkt anmelden</h2>
-      <p>Damit sich nichts überschneidet: Sagt den Trauzeugen kurz, was ihr vorhabt.</p>
-
-      <form id="programm-form" novalidate>
-        <label class="field-label" for="pp-name">Euer Name</label>
-        <input id="pp-name" type="text" autocomplete="name" required>
-
-        <label class="field-label" for="pp-was">Was habt ihr vor?</label>
-        <textarea id="pp-was" required placeholder="z. B. kurze Rede, Spiel mit dem Brautpaar, Lied"></textarea>
-
-        <label class="field-label" for="pp-dauer">Ungefähre Dauer in Minuten</label>
-        <input id="pp-dauer" type="number" inputmode="numeric" min="1" max="120" value="10">
-
-        <fieldset>
-          <legend class="field-label">Was braucht ihr dafür?</legend>
-          <label class="choice"><input type="checkbox" name="technik" value="Mikrofon"> Mikrofon</label>
-          <label class="choice"><input type="checkbox" name="technik" value="Beamer und Leinwand"> Beamer und Leinwand</label>
-          <label class="choice"><input type="checkbox" name="technik" value="Musik / Lautsprecher"> Musik oder Lautsprecher</label>
-          <label class="choice"><input type="checkbox" name="technik" value="Tisch oder Strom"> Tisch oder Strom</label>
-        </fieldset>
-
-        <p id="pp-fehler" class="error" role="alert" hidden></p>
-        <button class="button" id="pp-senden" type="submit">Mail an die Trauzeugen öffnen</button>
-        <p class="hint" id="pp-hinweis">Danach öffnet sich dein E-Mail-Programm mit einer fertigen Nachricht an die Trauzeugen. Tobi und Alina bekommen davon nichts mit.</p>
-      </form>
-    </section>
   </article>
 </main>
 <script>
@@ -171,37 +117,6 @@
   Array.prototype.forEach.call(document.querySelectorAll('[data-tel]'), function (el) {
     el.textContent = el.getAttribute('data-tel').split('|').join(' ');
     el.parentNode.hidden = false;
-  });
-})();
-(function () {
-  // Adresse der Trauzeugen in zwei Teilen, z. B. ['trauzeugen.hochzeit', 'gmail.com'].
-  // Solange sie leer ist, bleibt der Knopf ausgeschaltet.
-  var ADRESSE = ['', ''];
-  var empfaenger = ADRESSE[0] && ADRESSE[1] ? ADRESSE.join('@') : '';
-
-  var form = document.getElementById('programm-form');
-  var knopf = document.getElementById('pp-senden');
-  var fehler = document.getElementById('pp-fehler');
-  if (!empfaenger) {
-    knopf.disabled = true;
-    document.getElementById('pp-hinweis').textContent = 'Die Kontaktadresse der Trauzeugen folgt noch.';
-  }
-  form.addEventListener('input', function () { fehler.hidden = true; });
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
-    if (!empfaenger) return;
-    var name = document.getElementById('pp-name').value.trim();
-    var was = document.getElementById('pp-was').value.trim();
-    var dauer = parseInt(document.getElementById('pp-dauer').value, 10);
-    if (!name) { fehler.textContent = 'Bitte tragt euren Namen ein.'; fehler.hidden = false; return; }
-    if (!was) { fehler.textContent = 'Bitte schreibt kurz, was ihr vorhabt.'; fehler.hidden = false; return; }
-    var technik = Array.prototype.map.call(form.querySelectorAll('input[name="technik"]:checked'), function (c) { return c.value; });
-    var betreff = 'Hochzeit Tobi & Alina – Programmpunkt: ' + name;
-    var text = 'Name: ' + name + '\n\nWas wir vorhaben:\n' + was +
-      '\n\nDauer: ' + (dauer > 0 ? 'ca. ' + dauer + ' Minuten' : 'noch unklar') +
-      '\nBenötigt: ' + (technik.length ? technik.join(', ') : 'nichts Besonderes') +
-      '\n\nGesendet über die Hochzeitsseite.';
-    window.location.href = 'mailto:' + empfaenger + '?subject=' + encodeURIComponent(betreff) + '&body=' + encodeURIComponent(text);
   });
 })();
 </script>
