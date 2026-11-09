@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
+<meta name="format-detection" content="telephone=no">
 <title>Trauzeugen · Tobi &amp; Alina heiraten</title>
 <link rel="icon" href="logo.webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -62,7 +63,6 @@
   .person .name { margin: 0; font-family: 'Big Shoulders', Impact, sans-serif; font-weight: 700; font-size: 26px; line-height: 1.1; }
   .person .rolle { margin: 2px 0 8px; font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; }
   .person .kontakt { margin: 0 0 8px; font-family: 'DM Mono', monospace; font-size: 15px; }
-  .person .kontakt a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 4px; color: var(--forest); text-underline-offset: 3px; }
   .person .ueber { margin: 0; font-size: 16px; }
   .anmelden { border-top: 2px solid var(--forest); padding-top: 18px; }
   .anmelden > p { margin: 0 0 16px; }
@@ -123,14 +123,14 @@
         </div>
         <p class="name">Michi</p>
         <p class="rolle">An Tobis Seite</p>
-        <p class="kontakt" hidden>Tel. <a data-tel="+49|1522|8960555" href="#"></a></p>
+        <p class="kontakt" hidden>Tel. <span data-tel="+49|1522|8960555"></span></p>
         <p class="ueber">Woher wir uns kennen: folgt.</p>
       </section>
       <section class="person">
         <div class="foto"><img src="ruth.webp" alt="Ruth, Alinas Trauzeugin" width="360" height="360"></div>
         <p class="name">Ruth</p>
         <p class="rolle">An Alinas Seite</p>
-        <p class="kontakt" hidden>Tel. <a data-tel="0|175|1824162" href="#"></a></p>
+        <p class="kontakt" hidden>Tel. <span data-tel="+49|175|1824162"></span></p>
         <p class="ueber">Woher wir uns kennen: folgt.</p>
       </section>
     </div>
@@ -167,13 +167,10 @@
 <script>
 (function () {
   // Telefonnummern der Trauzeugen aus Teilen zusammensetzen (stehen so nicht als Klartext im Quelltext)
-  Array.prototype.forEach.call(document.querySelectorAll('a[data-tel]'), function (a) {
-    var teile = a.getAttribute('data-tel').split('|');
-    var wahl = teile.join('');
-    if (wahl.charAt(0) === '0') wahl = '+49' + wahl.slice(1);
-    a.textContent = teile.join(' ');
-    a.href = 'tel:' + wahl;
-    a.parentNode.hidden = false;
+  // Nur als Text anzeigen (kein Anruf-Link), damit das Handy nicht von selbst wählt
+  Array.prototype.forEach.call(document.querySelectorAll('[data-tel]'), function (el) {
+    el.textContent = el.getAttribute('data-tel').split('|').join(' ');
+    el.parentNode.hidden = false;
   });
 })();
 (function () {
