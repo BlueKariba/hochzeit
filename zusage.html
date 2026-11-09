@@ -105,6 +105,11 @@
         <input id="rsvp-personen" name="personen" type="number" inputmode="numeric" min="1" max="20" value="1" required>
       </div>
 
+      <div id="lied-feld">
+        <label class="field-label" for="rsvp-lied">Welcher Song bringt euch auf die Tanzfläche?</label>
+        <input id="rsvp-lied" name="lied" type="text" maxlength="80" autocomplete="off" placeholder="Titel und Interpret (freiwillig)">
+      </div>
+
       <!-- Falle für Spam-Roboter: echte Besucher sehen und füllen dieses Feld nie aus -->
       <div class="pot" aria-hidden="true"><label>Bitte leer lassen <input id="rsvp-website" type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
 
@@ -138,6 +143,8 @@
   var misslungen = document.getElementById('rsvp-misslungen');
   var personenFeld = document.getElementById('personen-feld');
   var personen = document.getElementById('rsvp-personen');
+  var liedFeld = document.getElementById('lied-feld');
+  var lied = document.getElementById('rsvp-lied');
   var fehler = document.getElementById('rsvp-fehler');
   var knopf = form.querySelector('.send');
   var titel = document.getElementById('rsvp-titel');
@@ -152,6 +159,7 @@
   function kommt() { return form.querySelector('input[name="kommt"]:checked').value === 'ja'; }
   function aktualisieren() {
     personenFeld.hidden = !kommt();
+    liedFeld.hidden = !kommt();
     knopf.textContent = kommt() ? 'Zusage senden' : 'Absage senden';
   }
   form.querySelectorAll('input[name="kommt"]').forEach(function (r) { r.addEventListener('change', aktualisieren); });
@@ -186,7 +194,8 @@
     fehler.hidden = true;
     misslungen.hidden = true;
     var betreff = 'Hochzeit – ' + (kommt() ? 'Zusage' : 'Absage') + ': ' + name;
-    var text = 'Name: ' + name + '\nKommt: ' + (kommt() ? 'Ja' : 'Nein') + (kommt() ? '\nPersonen: ' + anzahl : '') + '\n\nGesendet über die Hochzeitsseite.';
+    var wunsch = kommt() ? lied.value.replace(/\s+/g, ' ').trim().slice(0, 80) : '';
+    var text = 'Name: ' + name + '\nKommt: ' + (kommt() ? 'Ja' : 'Nein') + (kommt() ? '\nPersonen: ' + anzahl : '') + (wunsch ? '\nMusikwunsch: ' + wunsch : '') + '\n\nGesendet über die Hochzeitsseite.';
 
     // Ohne Skript-Adresse: wie bisher das E-Mail-Programm öffnen
     if (!ZUSAGE_URL) {
@@ -203,14 +212,14 @@
     knopf.disabled = true;
     knopf.textContent = 'Wird gesendet …';
     direktSenden({
-      a: 'zusage', name: name, kommt: ja ? 'ja' : 'nein', personen: ja ? anzahl : 0,
+      a: 'zusage', name: name, kommt: ja ? 'ja' : 'nein', personen: ja ? anzahl : 0, lied: ja ? wunsch : '',
       website: document.getElementById('rsvp-website').value
     }).then(function (ok) {
       if (ok) {
         form.hidden = true;
         antwortTitel(ja);
         document.getElementById('rsvp-danke-text').textContent = ja
-          ? 'Eure Zusage ist bei uns angekommen.'
+          ? 'Eure Zusage ist bei uns angekommen.' + (wunsch ? ' Euren Musikwunsch haben wir notiert.' : '')
           : 'Eure Absage ist bei uns angekommen.';
         document.getElementById('rsvp-mail-hinweis').hidden = true;
         danke.hidden = false;
