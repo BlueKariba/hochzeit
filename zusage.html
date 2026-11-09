@@ -86,9 +86,9 @@
     <div class="top">
       <img class="logo" src="logo.webp" alt="Logo: Zuckerwatte und Bier">
       <p class="kicker">Tobi &amp; Alina · 24. Juli 2027</p>
-      <h1>Seid ihr dabei?</h1>
+      <h1 id="rsvp-titel">Seid ihr dabei?</h1>
     </div>
-    <p class="intro">Bitte gebt uns bis zum 01.04.2027 Bescheid.</p>
+    <p class="intro" id="rsvp-intro">Bitte gebt uns bis zum 01.04.2027 Bescheid.</p>
 
     <form id="rsvp-form" novalidate>
       <label class="field-label" for="rsvp-name">Euer Name</label>
@@ -140,6 +140,14 @@
   var personen = document.getElementById('rsvp-personen');
   var fehler = document.getElementById('rsvp-fehler');
   var knopf = form.querySelector('.send');
+  var titel = document.getElementById('rsvp-titel');
+  var intro = document.getElementById('rsvp-intro');
+
+  // Nach der Antwort passen Überschrift und Text zur Antwort (die Frage ist ja schon beantwortet)
+  function antwortTitel(ja) {
+    titel.textContent = ja ? 'Schön, dass ihr dabei seid!' : 'Schade, dass ihr nicht dabei seid.';
+    intro.textContent = ja ? 'Wir freuen uns auf euch.' : 'Danke, dass ihr uns Bescheid gegeben habt.';
+  }
 
   function kommt() { return form.querySelector('input[name="kommt"]:checked').value === 'ja'; }
   function aktualisieren() {
@@ -184,6 +192,7 @@
     if (!ZUSAGE_URL) {
       var link = document.getElementById('rsvp-mail-link');
       link.href = 'mailto:' + empfaenger; link.textContent = empfaenger;
+      antwortTitel(kommt());
       danke.hidden = false;
       window.location.href = mailtoLink(betreff, text);
       return;
@@ -199,9 +208,10 @@
     }).then(function (ok) {
       if (ok) {
         form.hidden = true;
+        antwortTitel(ja);
         document.getElementById('rsvp-danke-text').textContent = ja
-          ? 'Eure Zusage ist bei uns angekommen. Wir freuen uns auf euch!'
-          : 'Eure Absage ist bei uns angekommen. Schade, dass ihr nicht dabei sein könnt.';
+          ? 'Eure Zusage ist bei uns angekommen.'
+          : 'Eure Absage ist bei uns angekommen.';
         document.getElementById('rsvp-mail-hinweis').hidden = true;
         danke.hidden = false;
         danke.scrollIntoView({ block: 'center' });
