@@ -73,6 +73,9 @@
   .danke { margin-top: 16px; padding: 12px 14px; background: var(--sage-light); border-radius: 10px; font-size: 16px; }
   .danke p { margin: 0 0 6px; }
   .danke a { color: var(--forest); }
+  .error a { color: #7A2A0E; }
+  .button[disabled] { opacity: .6; cursor: wait; }
+  .pot { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
   [hidden] { display: none !important; }
 </style>
 </head>
@@ -102,22 +105,37 @@
         <input id="rsvp-personen" name="personen" type="number" inputmode="numeric" min="1" max="20" value="1" required>
       </div>
 
+      <!-- Falle für Spam-Roboter: echte Besucher sehen und füllen dieses Feld nie aus -->
+      <div class="pot" aria-hidden="true"><label>Bitte leer lassen <input id="rsvp-website" type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+
       <p id="rsvp-fehler" class="error" role="alert" hidden></p>
       <button class="button send" type="submit">Zusage senden</button>
-      <p class="hint">Danach öffnet sich dein E-Mail-Programm mit einer fertigen Nachricht an uns. Bitte nur noch auf „Senden“ tippen.</p>
+      <p class="hint" id="rsvp-hinweis">Danach öffnet sich dein E-Mail-Programm mit einer fertigen Nachricht an uns. Bitte nur noch auf „Senden“ tippen.</p>
     </form>
 
-    <div id="rsvp-danke" class="danke" hidden>
-      <p><strong>Danke!</strong> Bitte die Mail in deinem E-Mail-Programm noch abschicken.</p>
-      <p>Hat sich nichts geöffnet? Dann schreib uns einfach an <a id="rsvp-mail-link" href="#"></a>.</p>
+    <div id="rsvp-danke" class="danke" role="status" hidden>
+      <p><strong>Danke!</strong> <span id="rsvp-danke-text">Bitte die Mail in deinem E-Mail-Programm noch abschicken.</span></p>
+      <p id="rsvp-mail-hinweis">Hat sich nichts geöffnet? Dann schreib uns einfach an <a id="rsvp-mail-link" href="#"></a>.</p>
+    </div>
+
+    <div id="rsvp-misslungen" class="error" role="alert" hidden>
+      <p style="margin:0 0 6px">Das Senden hat leider nicht geklappt. Bitte versucht es gleich noch einmal.</p>
+      <p style="margin:0">Oder schickt uns die Antwort per Mail: <a id="rsvp-fallback-link" href="#">Mail vorbereiten</a></p>
     </div>
   </article>
 </main>
 <script>
 (function () {
+  // Adresse der Web-App aus 4_Zusagen_Google-Skript (siehe LIESMICH.txt).
+  // Leer lassen = die Seite öffnet wie bisher das E-Mail-Programm.
+  var ZUSAGE_URL = 'https://script.google.com/macros/s/AKfycbx-xzOwmT8CdXyhcbrYjoHW9VEITDx7SD9AP4NZ-vQGY67FRJT9Xz9Nd_FiEeyvflc2KA/exec';
+
   // Empfaenger in Teilen, damit die Adresse nicht als Klartext im Quelltext steht
   var empfaenger = ['Hochzeit27', ['outlook', 'com'].join('.')].join('@');
   var form = document.getElementById('rsvp-form');
+  var hinweis = document.getElementById('rsvp-hinweis');
+  var danke = document.getElementById('rsvp-danke');
+  var misslungen = document.getElementById('rsvp-misslungen');
   var personenFeld = document.getElementById('personen-feld');
   var personen = document.getElementById('rsvp-personen');
   var fehler = document.getElementById('rsvp-fehler');
@@ -130,7 +148,26 @@
   }
   form.querySelectorAll('input[name="kommt"]').forEach(function (r) { r.addEventListener('change', aktualisieren); });
   aktualisieren();
-  form.addEventListener('input', function () { fehler.hidden = true; });
+  form.addEventListener('input', function () { fehler.hidden = true; misslungen.hidden = true; });
+
+  if (ZUSAGE_URL) hinweis.textContent = 'Eure Antwort geht direkt an uns. Ihr müsst nichts weiter tun.';
+
+  function mailtoLink(betreff, text) {
+    return 'mailto:' + empfaenger + '?subject=' + encodeURIComponent(betreff) + '&body=' + encodeURIComponent(text);
+  }
+
+  // Schickt die Antwort an das Skript. Gibt ein Versprechen zurück, das bei Erfolg true liefert.
+  function direktSenden(daten) {
+    var ctrl = window.AbortController ? new AbortController() : null;
+    var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, 15000);
+    var opts = { method: 'POST', body: JSON.stringify(daten) };   // ohne eigenen Header: kein Vorab-Check nötig
+    if (ctrl) opts.signal = ctrl.signal;
+    return fetch(ZUSAGE_URL, opts)
+      .then(function (r) { return r.json(); })
+      .then(function (j) { return !!(j && j.ok); })
+      .catch(function () { return false; })
+      .then(function (ok) { clearTimeout(timer); return ok; });
+  }
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
@@ -139,12 +176,42 @@
     if (!name) { fehler.textContent = 'Bitte tragt euren Namen ein.'; fehler.hidden = false; return; }
     if (kommt() && !(anzahl >= 1 && anzahl <= 20)) { fehler.textContent = 'Bitte gebt an, mit wie vielen Personen ihr kommt.'; fehler.hidden = false; return; }
     fehler.hidden = true;
+    misslungen.hidden = true;
     var betreff = 'Hochzeit – ' + (kommt() ? 'Zusage' : 'Absage') + ': ' + name;
     var text = 'Name: ' + name + '\nKommt: ' + (kommt() ? 'Ja' : 'Nein') + (kommt() ? '\nPersonen: ' + anzahl : '') + '\n\nGesendet über die Hochzeitsseite.';
-    var link = document.getElementById('rsvp-mail-link');
-    link.href = 'mailto:' + empfaenger; link.textContent = empfaenger;
-    document.getElementById('rsvp-danke').hidden = false;
-    window.location.href = 'mailto:' + empfaenger + '?subject=' + encodeURIComponent(betreff) + '&body=' + encodeURIComponent(text);
+
+    // Ohne Skript-Adresse: wie bisher das E-Mail-Programm öffnen
+    if (!ZUSAGE_URL) {
+      var link = document.getElementById('rsvp-mail-link');
+      link.href = 'mailto:' + empfaenger; link.textContent = empfaenger;
+      danke.hidden = false;
+      window.location.href = mailtoLink(betreff, text);
+      return;
+    }
+
+    var ja = kommt();
+    var vorher = knopf.textContent;
+    knopf.disabled = true;
+    knopf.textContent = 'Wird gesendet …';
+    direktSenden({
+      a: 'zusage', name: name, kommt: ja ? 'ja' : 'nein', personen: ja ? anzahl : 0,
+      website: document.getElementById('rsvp-website').value
+    }).then(function (ok) {
+      if (ok) {
+        form.hidden = true;
+        document.getElementById('rsvp-danke-text').textContent = ja
+          ? 'Eure Zusage ist bei uns angekommen. Wir freuen uns auf euch!'
+          : 'Eure Absage ist bei uns angekommen. Schade, dass ihr nicht dabei sein könnt.';
+        document.getElementById('rsvp-mail-hinweis').hidden = true;
+        danke.hidden = false;
+        danke.scrollIntoView({ block: 'center' });
+      } else {
+        knopf.disabled = false;
+        knopf.textContent = vorher;
+        document.getElementById('rsvp-fallback-link').href = mailtoLink(betreff, text);
+        misslungen.hidden = false;
+      }
+    });
   });
 })();
 </script>
